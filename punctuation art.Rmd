@@ -1,0 +1,27 @@
+---
+title: "Anna Karenina by Leo Tolstoy"
+author: "Yutong Lu"
+date: '2022-02-20'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+# Anna Karenina by Leo Tolstoy
+text <- readLines("https://www.gutenberg.org/files/1399/1399-0.txt")[0:39819+54]
+```
+
+```{r}
+punc <- gsub('[a-zA-Z0-9 ]', '', text)
+punc <- punc[punc != ""]
+punc <- data.frame(punc)
+```
+

@@ -1,3 +1,2 @@
 # TidyTuesday
-Professional Skills Development
-This is a line from RStudio.
+Professional Skills Development and punctuation art.
