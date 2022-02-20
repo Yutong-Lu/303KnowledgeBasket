@@ -9,7 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r setup, message=FALSE}
 library(tidyverse)
 ```
 
@@ -24,4 +24,33 @@ punc <- gsub('[a-zA-Z0-9 ]', '', text)
 punc <- punc[punc != ""]
 punc <- data.frame(punc)
 ```
+
+```{r}
+# example?
+p <- ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars)))
+p + geom_text(check_overlap = TRUE)
+mtcars
+```
+
+```{r}
+x <- rep(1:174, each=174)
+y <- rep(1:174, 174)
+
+blank <- data.frame(rep("", 285))
+colnames(blank) <- "punc"
+punc <- rbind(punc, blank)
+
+matrix <- as.tibble(cbind(x,y,punc))
+
+matrix %>% ggplot(aes(x,y, label = punc)) + geom_text(check_overlap = TRUE) +  
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  theme_minimal() +
+  labs(caption = "test")
+```
+
 
