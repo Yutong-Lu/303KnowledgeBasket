@@ -13,7 +13,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-
 ```{r}
 # Anna Karenina by Leo Tolstoy
 text <- readLines("https://www.gutenberg.org/files/1399/1399-0.txt")[0:39819+54]
@@ -22,28 +21,40 @@ text <- readLines("https://www.gutenberg.org/files/1399/1399-0.txt")[0:39819+54]
 ```{r}
 library(stringi)
 
+# change the French letters to English letters
 text <- stri_trans_general(str = text, id = "Latin-ASCII")
 
+# remove all the alphanumeric characters
 punc <- gsub('[a-zA-Z0-9 ]', '', text)
+# remove the empty strings
 punc <- punc[punc != ""]
+
+# Now each character in punc is more than one punctuation, i.e. ",.?"
+# split them into single punctuation
 punc <- unlist(strsplit(punc, ""))
+
+# change punc to a dataframe to use ggplot
 punc <- data.frame(punc)
 ```
 
 ```{r, fig.height=6, fig.width=6}
-x <- rep(1:286, 286)
-y <- rep(286:1, each=286)
+# create the two dimensions of a matrix to fit all the punctuation
+x <- rep(1:286, 286) # start at top left
+y <- rep(286:1, each=286) # end at bottom right
 
+# add empty rows to punc so that it can be cbind with x and y
 blank <- data.frame(rep(" ", 392))
 colnames(blank) <- "punc"
 punc <- rbind(punc, blank)
 
+# create the matrix with x, y and punc
 matrix <- as_tibble(cbind(x,y,punc))
 
+# plot the matrix
 matrix %>% 
-  ggplot(aes(x,y, label = punc)) + 
-  geom_text(size = 1.5) +  
-  theme_void()+
+  ggplot(aes(x,y, label = punc)) + # label each point in the matrix with the punctuation
+  geom_text(size = 1.5) +  # the labels are all the punctuation in the text
+  theme_void()+ # remove all labels and axis
   theme(
     plot.title = element_text(size=22),
     plot.caption = element_text(size=22)) +
