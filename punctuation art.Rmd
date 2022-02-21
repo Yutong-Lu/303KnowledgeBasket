@@ -9,7 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r setup, message=FALSE}
+```{r, message=FALSE}
 library(tidyverse)
 ```
 
@@ -22,35 +22,34 @@ text <- readLines("https://www.gutenberg.org/files/1399/1399-0.txt")[0:39819+54]
 ```{r}
 library(stringi)
 
-text = stri_trans_general(str = text, id = "Latin-ASCII")
+text <- stri_trans_general(str = text, id = "Latin-ASCII")
 
 punc <- gsub('[a-zA-Z0-9 ]', '', text)
 punc <- punc[punc != ""]
+punc <- unlist(strsplit(punc, ""))
 punc <- data.frame(punc)
 ```
 
 ```{r}
-# example?
-p <- ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars)))
-p + geom_text(check_overlap = TRUE)
-mtcars
-```
+x <- rep(1:286, 286)
+y <- rep(286:1, each=286)
 
-```{r, fig.height=8, fig.width=8}
-x <- rep(1:174, 174)
-y <- rep(174:1, each=174)
-
-blank <- data.frame(rep(" ", 289))
+blank <- data.frame(rep(" ", 392))
 colnames(blank) <- "punc"
 punc <- rbind(punc, blank)
 
-matrix <- as.tibble(cbind(x,y,punc))
+matrix <- as_tibble(cbind(x,y,punc))
 
 matrix %>% 
   ggplot(aes(x,y, label = punc)) + 
-  geom_text(size = 1.7) +  
+  geom_text(size = 2) +  
   theme_void()+
-  labs(caption = "test")
+  theme(
+    plot.title = element_text(size=22),
+    plot.caption = element_text(size=22)) +
+  labs(
+    title = "Anna Karenina by Leo Tolstoy in punctuation",
+    caption = "@Yutong-Lu, text source: Project Gutenberg")
 ```
 
 
