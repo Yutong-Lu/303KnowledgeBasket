@@ -30,7 +30,7 @@ punc <- unlist(strsplit(punc, ""))
 punc <- data.frame(punc)
 ```
 
-```{r}
+```{r, fig.height=6, fig.width=6}
 x <- rep(1:286, 286)
 y <- rep(286:1, each=286)
 
@@ -42,7 +42,7 @@ matrix <- as_tibble(cbind(x,y,punc))
 
 matrix %>% 
   ggplot(aes(x,y, label = punc)) + 
-  geom_text(size = 2) +  
+  geom_text(size = 1.5) +  
   theme_void()+
   theme(
     plot.title = element_text(size=22),
