@@ -20,6 +20,10 @@ text <- readLines("https://www.gutenberg.org/files/1399/1399-0.txt")[0:39819+54]
 ```
 
 ```{r}
+library(stringi)
+
+text = stri_trans_general(str = text, id = "Latin-ASCII")
+
 punc <- gsub('[a-zA-Z0-9 ]', '', text)
 punc <- punc[punc != ""]
 punc <- data.frame(punc)
@@ -32,24 +36,20 @@ p + geom_text(check_overlap = TRUE)
 mtcars
 ```
 
-```{r}
-x <- rep(1:174, each=174)
-y <- rep(1:174, 174)
+```{r, fig.height=8, fig.width=8}
+x <- rep(1:174, 174)
+y <- rep(174:1, each=174)
 
-blank <- data.frame(rep("", 285))
+blank <- data.frame(rep(" ", 289))
 colnames(blank) <- "punc"
 punc <- rbind(punc, blank)
 
 matrix <- as.tibble(cbind(x,y,punc))
 
-matrix %>% ggplot(aes(x,y, label = punc)) + geom_text(check_overlap = TRUE) +  
-  theme(axis.title.x=element_blank(),
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.title.y=element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.y=element_blank()) +
-  theme_minimal() +
+matrix %>% 
+  ggplot(aes(x,y, label = punc)) + 
+  geom_text(size = 1.7) +  
+  theme_void()+
   labs(caption = "test")
 ```
 
